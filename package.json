@@ -1,0 +1,9 @@
+{
+  "name": "openxml-js",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "jszip": "^2.5.0"
+  }
+}
