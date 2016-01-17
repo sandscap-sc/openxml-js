@@ -14,26 +14,27 @@ ContentTypes.prototype.addOverride = function(partName, contentType) {
 };
 
 ContentTypes.prototype.serialize = function() {
-  var defaultNodes, overrideNodes, string;
+  var defaultNodes, overrideNodes;
 
-  defaultNodes = this.defaults.map(function(type) {
-    return Xml.elementWithAttributes('Default', {
+  defaultNodes = this.defaults.map(function (type) {
+    return {
       Extension: type.extension,
       ContentType: type.contentType
-    });
+    };
   });
 
-  overrideNodes = this.overrides.map(function(override) {
-    return Xml.elementWithAttributes('Override', {
+  overrideNodes = this.overrides.map(function (override) {
+    return {
       PartName: override.partName,
       ContentType: override.contentType
-    });
+    }
   });
 
-  string = '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">';
-  string += defaultNodes.concat(overrideNodes).join('');
-  string += '</Types>';
-  return string;
+  return Xml.element('Types', {
+    xmlns: 'http://schemas.openxmlformats.org/package/2006/content-types',
+    Default: defaultNodes,
+    Override: overrideNodes
+  });
 };
 
 module.exports = ContentTypes;

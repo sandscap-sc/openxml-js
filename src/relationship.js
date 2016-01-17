@@ -1,5 +1,3 @@
-var Xml = require('./xml');
-
 var Relationship = function(id, target, targetType, opt_targetMode) {
   this.id = id;
   this.target = target;
@@ -18,7 +16,7 @@ Relationship.prototype.serialize = function() {
     props.targetMode = this.targetMode;
   }
 
-  return Xml.elementWithAttributes('Relationship', props);
+  return props;
 };
 
 module.exports = Relationship;

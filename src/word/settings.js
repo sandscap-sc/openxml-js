@@ -5,17 +5,7 @@ var Settings = function() {
 };
 
 Settings.prototype.serialize = function() {
-  // TODO: (harisiva): Refactor out the repeated {w:val} assignments into a function
-  var props =
-    Xml.elementWithAttributes('w:zoom', {'w:percent': '100'}) +
-    Xml.elementWithAttributes('w:characterSpacingControl', {'w:val': 'doNotCompress'}) +
-    Xml.elementWithAttributes('w:themeFontLang', {'w:val': 'en-US'}) +
-    Xml.elementWithAttributes('w:decimalSymbol', {'w:val': '.'}) +
-    Xml.elementWithAttributes('w:listSeparator', {'w:val': ','}) +
-      // TODO: Create a real document id here
-    Xml.elementWithAttributes('w15:docId', {'w15:val': '{FFFFF82B-A1D2-465B-82CE-BF2A1CA965C2}'});
-
-  return Xml.elementWithAttributes('w:settings', {
+  var props = {
     'xmlns:mc': XmlNamespaces.mc,
     'xmlns:o': XmlNamespaces.o,
     'xmlns:r': XmlNamespaces.r,
@@ -26,8 +16,15 @@ Settings.prototype.serialize = function() {
     'xmlns:w15': XmlNamespaces.w15,
     'xmlns:sl': XmlNamespaces.sl,
     'xmlns:v': XmlNamespaces.v,
-    'mc:Ignorable': 'w14 w15'
-  }, props);
+    'mc:Ignorable': 'w14 w15',
+    zoom: {percent: 100},
+    characterSpacingControl: {val: 'doNotCompress'},
+    themeFontLang: {val: 'en-US'},
+    decimalSymbol: {val: '.'},
+    listSeparator: {val: ','}
+  };
+
+  return Xml.element('settings', props, 'w');
 };
 
 module.exports = Settings;

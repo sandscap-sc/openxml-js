@@ -44,13 +44,11 @@ Word.prototype.getFiles = function() {
   return [
     {name: Files.Document, contents: this._document.serialize()},
     {name: Files.FontTable, contents: this._fonts.serialize()},
-    //{name: Files.FontTable, contents: fontTableXml},
     {name: Files.Rels, contents: this._rels.serialize()},
     {name: Files.Styles, contents: this._styles.serialize()},
-    //{name: Files.Styles, contents: stylesXml},
     {name: Files.Settings, contents: this._settings.serialize()},
-    {name: Files.WebSettings, contents: this._webSettings.serialize()},
-    {name: Files.Theme, contents: theme1Xml}
+    {name: Files.WebSettings, contents: this._webSettings.serialize()}
+    // {name: Files.Theme, contents: theme1Xml}
   ];
 };
 
@@ -59,7 +57,9 @@ Word.prototype._createRelationships = function() {
   this._rels.add('settings.xml', Constants.RelationshipTypes.Settings);
   this._rels.add('webSettings.xml', Constants.RelationshipTypes.WebSettings);
   this._rels.add('styles.xml', Constants.RelationshipTypes.Styles);
-  this._rels.add('theme/theme1.xml', Constants.RelationshipTypes.Theme);
+
+  // TODO: (harisiva) Themes are not necessary; add in if helpful
+  // this._rels.add('theme/theme1.xml', Constants.RelationshipTypes.Theme);
 };
 
 /**
@@ -71,12 +71,13 @@ Word.prototype._createContentTypes = function() {
   this._contentTypes.addDefault('jpeg', 'image/jpeg');
 
   this._contentTypes.addOverride('/' + Files.Document, Constants.ContentTypes.WordDocument);
+  // TODO: (harisiva): Enable numbering style
   //this._contentTypes.addOverride('/' + Files.Numbering, Constants.ContentTypes.Numbering);
   this._contentTypes.addOverride('/' + Files.Styles, Constants.ContentTypes.Styles);
   this._contentTypes.addOverride('/' + Files.Settings, Constants.ContentTypes.Settings);
   this._contentTypes.addOverride('/' + Files.WebSettings, Constants.ContentTypes.WebSettings);
   this._contentTypes.addOverride('/' + Files.FontTable, Constants.ContentTypes.FontTable);
-  this._contentTypes.addOverride('/' + Files.Theme, Constants.ContentTypes.Theme);
+  // this._contentTypes.addOverride('/' + Files.Theme, Constants.ContentTypes.Theme);
 };
 
 module.exports = Word;

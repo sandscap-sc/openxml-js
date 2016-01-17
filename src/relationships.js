@@ -1,3 +1,5 @@
+var Xml = require('./xml');
+
 var Relationship = require('./relationship');
 
 var Relationships = function() {
@@ -15,14 +17,10 @@ Relationships.prototype.add = function(target, targetType, opt_targetMode) {
 };
 
 Relationships.prototype.serialize = function() {
-  var string = '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
-
-  this.rels.forEach(function(rel) {
-    string += rel.serialize();
+  return Xml.element('Relationships', {
+    xmlns: 'http://schemas.openxmlformats.org/package/2006/relationships',
+    Relationship: this.rels.map(function(rel) { return rel.serialize(); })
   });
-
-  string += '</Relationships>';
-  return string;
 };
 
 module.exports = Relationships;

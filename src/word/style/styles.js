@@ -32,8 +32,8 @@ var ParagraphStyles = {
 };
 
 var CharacterStyles = {
-  Heading1: 'Heading1Character',
-  Heading2: 'Heading2Character'
+  Heading1: 'Heading1Char',
+  Heading2: 'Heading2Char'
 };
 
 var ListNumberingStyles = {

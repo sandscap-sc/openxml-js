@@ -44,18 +44,15 @@ var Fonts = function() {
 };
 
 Fonts.prototype.serialize = function() {
-  var children = this.fonts.map(function(font) {
-      return font.serialize();
-    }).join('');
-
-  return Xml.elementWithAttributes('w:fonts', {
+  return Xml.element('fonts', {
     'xmlns:mc': XmlNamespaces.mc,
     'xmlns:r': XmlNamespaces.r,
     'xmlns:w': XmlNamespaces.w,
     'xmlns:w14': XmlNamespaces.w14,
     'xmlns:w15': XmlNamespaces.w15,
-    'mc:Ignorable': 'w14 w15'
-  }, children);
+    'mc:Ignorable': 'w14 w15',
+    font: this.fonts.map(function(font) { return font.serialize() })
+  }, 'w');
 };
 
 module.exports = Fonts;

@@ -21,7 +21,7 @@ var Run = function (options) {
 };
 
 Run.prototype.serialize = function () {
-  var rPr, structure = {}, drawingContents;
+  var rPr, structure = {}, drawingContents, text;
 
   if (this.formatting.length > 0 || this.style) {
     rPr = {};
@@ -46,15 +46,15 @@ Run.prototype.serialize = function () {
     });
 
     if (this.style) {
-      rPr['rStyle'] = {val: CharacterStyles[style]};
+      rPr['rStyle'] = {val: CharacterStyles[this.style]};
     }
   }
 
   // TODO: Remember to escape content here
   if (this.text) {
-    structure['t'] = {};
-    structure['t']['xml:space'] = 'preserve';
-    structure['t'][this.text] = null;
+    text = {};
+    text['xml:space'] = 'preserve';
+    text[this.text] = null;
   } else if (this.drawing) {
     if (!rPr) {
       rPr  = {};
@@ -62,11 +62,16 @@ Run.prototype.serialize = function () {
 
     rPr['noProof'] = {};
     drawingContents = this.drawing.serialize();
-    structure[drawingContents.diagram] = drawingContents;
   }
 
   if (rPr) {
     structure['rPr'] = rPr;
+  } else if (drawingContents) {
+    structure[drawingContents.diagram] = drawingContents;
+  }
+
+  if (text) {
+    structure['t'] = text;
   }
 
   return {r: structure};
@@ -74,3 +79,4 @@ Run.prototype.serialize = function () {
 
 module.exports = Run;
 module.exports.RunFormatting = RunFormatting;
+module.exports.RunStyles = RunStyles;
