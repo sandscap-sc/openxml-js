@@ -2,28 +2,20 @@ var Xml = require('../xml'),
     XmlNamespaces = require('../constants').XmlNamespaces;
 
 var ExtendedProperties = function() {
-  this.props = {
-    Application: 'Krypton',
-    AppVersion: '0.0.1',
-    Template: 'Normal.dotm',
-    SharedDoc: 'false',
-    HyperLinksChanged: 'false'
-  };
 };
 
 ExtendedProperties.prototype.serialize = function() {
-  var string, props = '', that = this;
-
-  Object.keys(this.props).forEach(function(key) {
-    props += Xml.elementWithContent(key, that.props[key]);
-  });
-
-  string = Xml.elementWithAttributes('Properties', {
+  var structure = {
     xmlns: XmlNamespaces.ExtendedProps,
-    'xmlns:vt': XmlNamespaces.vt
-  }, props);
+    'xmlns:vt': XmlNamespaces.vt,
+    Template: {'Normal.dotm': null},
+    Application: {'Krypton': null},
+    SharedDoc: {'false': null},
+    HyperlinksChanged: {'false': null},
+    AppVersion: {'0.0.1': null}
+  };
 
-  return string;
+  return Xml.element('Properties', structure);
 };
 
 module.exports = ExtendedProperties;

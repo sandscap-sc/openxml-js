@@ -1,51 +1,51 @@
-var ContentTypes = require('../content_types'),
-    Constants = require('../constants'),
-    Files = require('../constants').Word.Files,
-    Relationships = require('../relationships'),
-    WebSettings = require('./web_settings');
+var Xml = require('../xml'),
+    XmlNamespaces = require('../constants').XmlNamespaces;
 
 var Document = function() {
-  this.type = Constants.DocumentTypes.Word;
-
   this.paras = [];
-  this._relationships = new Relationships();
-
-  this._contentTypes = new ContentTypes();
-  this._createContentTypes();
-
-  this._webSettings = new WebSettings();
 };
 
 /**
- * Gets the content types that are specific to the document.
- * @returns {{defaults: string, overrides: string}}
+ * Adds a new para to the document
+ * @param {Paragraph} para
  */
-Document.prototype.getContentTypes = function() {
-  return this._contentTypes;
+Document.prototype.addPara = function(para) {
+  this.paras.push(para);
 };
 
-Document.prototype.getFiles = function() {
-  return [
-    {name: Files.Rels, contents: this._relationships.serialize()},
-    {name: Files.WebSettings, contents: this._webSettings.serialize()}
-  ];
-};
+Document.prototype.serialize = function() {
+  var structure = {
+    'xmlns:m': XmlNamespaces.m,
+    'xmlns:mc': XmlNamespaces.mc,
+    'xmlns:mo': XmlNamespaces.mo,
+    'xmlns:mv': XmlNamespaces.mv,
+    'xmlns:o': XmlNamespaces.o,
+    'xmlns:r': XmlNamespaces.r,
+    'xmlns:v': XmlNamespaces.v,
+    'xmlns:w': XmlNamespaces.w,
+    'xmlns:w10': XmlNamespaces.w10,
+    'xmlns:w14': XmlNamespaces.w14,
+    'xmlns:w15': XmlNamespaces.w15,
+    'xmlns:wne': XmlNamespaces.wne,
+    'xmlns:wp': XmlNamespaces.wp,
+    'xmlns:wp14': XmlNamespaces.wp14,
+    'xmlns:wpc': XmlNamespaces.wpc,
+    'xmlns:wpg': XmlNamespaces.wpg,
+    'xmlns:wpi': XmlNamespaces.wpi,
+    'xmlns:wps': XmlNamespaces.wps,
+    'mc:Ignorable': 'w14 w15 wp14',
+    body: {
+      p: this.paras.map(function(para) { return para.serialize().p; }),
+      sectPr: {
+        pgSz: {w: 12240, h: 15840},
+        pgMar: {top: 1440, right: 1440, bottom: 1440, left: 1440, header: 720, footer: 720, gutter: 0},
+        cols: {space: 720},
+        docGrid: {linePitch: 360}
+      }
+    }
+  };
 
-/**
- * Creates required content types for the document.
- * @private
- */
-Document.prototype._createContentTypes = function() {
-  // TODO: (harisiva): Remember to add all image content types
-  this._contentTypes.addDefault('jpeg', 'image/jpeg');
-
-  this._contentTypes.addOverride('/' + Files.Document, Constants.ContentTypes.WordDocument);
-  this._contentTypes.addOverride('/' + Files.Numbering, Constants.ContentTypes.Numbering);
-  this._contentTypes.addOverride('/' + Files.Styles, Constants.ContentTypes.Styles);
-  this._contentTypes.addOverride('/' + Files.Settings, Constants.ContentTypes.Settings);
-  this._contentTypes.addOverride('/' + Files.WebSettings, Constants.ContentTypes.WebSettings);
-  this._contentTypes.addOverride('/' + Files.FontTable, Constants.ContentTypes.FontTable);
-  this._contentTypes.addOverride('/' + Files.Theme, Constants.ContentTypes.Theme);
+  return Xml.element('document', structure, 'w');
 };
 
 module.exports = Document;

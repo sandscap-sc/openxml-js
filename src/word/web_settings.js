@@ -5,9 +5,10 @@ var WebSettings = function() {
 };
 
 WebSettings.prototype.serialize = function() {
-  var props = Xml.elementWithContent('w:allowPNG') +
-      Xml.elementWithContent('w:doNotSaveAsSingleFile') +
-      Xml.elementWithAttributes('w:pixelsPerInch', {'w:val': '96'});
+  var props =
+    Xml.elementWithContent('w:allowPNG') +
+    Xml.elementWithContent('w:doNotSaveAsSingleFile') +
+    Xml.elementWithAttributes('w:pixelsPerInch', {'w:val': '96'});
 
   return Xml.elementWithAttributes('w:webSettings', {
     'xmlns:mc': XmlNamespaces.mc,

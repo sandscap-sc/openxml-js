@@ -1,4 +1,4 @@
-var CharacterStyles = require('./style').CharacterStyles;
+var CharacterStyles = require('./style/styles').CharacterStyles;
 
 var RunFormatting = {
   Bold: 'bold',
@@ -21,24 +21,24 @@ var Run = function (options) {
 };
 
 Run.prototype.serialize = function () {
-  var run, runProps = '', contents;
+  var rPr, structure = {}, drawingContents;
 
   if (this.formatting.length > 0 || this.style) {
-    this.formatting.forEach(function (style) {
-      switch (style) {
+    rPr = {};
+    this.formatting.forEach(function(style) {
+      switch(style) {
         case RunFormatting.Bold:
-          runProps += '<w:b />';
+          rPr['b'] = {};
           break;
         case RunFormatting.Italics:
-          runProps += '<w:i />';
+          rPr['i'] = {};
           break;
         case RunFormatting.StrikeThrough:
           // Only support single line strike-through through the center
-          runProps += '<w:strike />';
+          rPr['strike'] = {};
           break;
         case RunFormatting.Underline:
-          // Only support single underline
-          runProps += '<w:u w:val="single" />';
+          rPr['u'] = {val: 'single'};
           break;
         default:
           throw new Error('Unknown run formatting ' + style);
@@ -46,24 +46,30 @@ Run.prototype.serialize = function () {
     });
 
     if (this.style) {
-      runProps += '<w:rStyle w:val="' + CharacterStyles[style] + '" />';
+      rPr['rStyle'] = {val: CharacterStyles[style]};
     }
   }
 
   // TODO: Remember to escape content here
   if (this.text) {
-    contents = '<w:t xml:space="preserve">' + this.text + '</w:t>';
+    structure['t'] = {};
+    structure['t']['xml:space'] = 'preserve';
+    structure['t'][this.text] = null;
   } else if (this.drawing) {
-    runProps += '<w:noProof />';
-    contents = this.drawing.serialize();
+    if (!rPr) {
+      rPr  = {};
+    }
+
+    rPr['noProof'] = {};
+    drawingContents = this.drawing.serialize();
+    structure[drawingContents.diagram] = drawingContents;
   }
 
-  run = '<w:r>';
-  run += runProps.length > 0 ? '<w:rPr>' + runProps + '</w:rPr>' : '';
-  run += contents;
-  run += '</w:r>';
+  if (rPr) {
+    structure['rPr'] = rPr;
+  }
 
-  return run;
+  return {r: structure};
 };
 
 module.exports = Run;

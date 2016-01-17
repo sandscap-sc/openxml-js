@@ -1,4 +1,4 @@
-var ParagraphStyles = require('./style').ParagraphStyles;
+var ParagraphStyles = require('./style/styles').ParagraphStyles;
 
 var Paragraph = function () {
   this.runs = [];
@@ -17,31 +17,35 @@ Paragraph.prototype.addRun = function (run) {
   this.runs.push(run);
 };
 
+/**
+ * Serializes the paragraph into JSON form that can be converted into XML.
+ * @returns {{p: {}}}
+ */
 Paragraph.prototype.serialize = function () {
-  var string = '<w:p>';
-
+  var structure = {}, pPr;
   if (this.style) {
-    string += '<w:pPr>';
-    string += '<w:pStyle w:val="' + this.style + '" />';
+    pPr = {};
+    pPr['pStyle'] = {
+        val: this.style
+    };
 
     if (this.numberedListStyle) {
-      string += '<w:numPr>';
-      string += '<w:ilvl w:val="' + this.numberedListStyle.indentLevel + '"/>';
-      string += '<w:numId w:val="' + this.numberedListStyle.numberTypeId + '"/>';
-      string += '</w:numPr>';
+      pPr['numPr'] = {
+        ilvl: {val: this.numberedListStyle.indentLevel},
+        numId: {val: this.numberedListStyle.numberTypeId}
+      };
     }
-
-    string += '</w:pPr>';
   }
 
-  string += this.runs
-    .map(function (run) {
-      return run.serialize();
-    })
-    .join(' ');
+  if (pPr) {
+    structure['pPr'] = pPr;
+  }
 
-  string += '</w:p>';
-  return string;
+  if (this.runs) {
+    structure['r'] = this.runs.map(function(run) { return run.serialize().r; });
+  }
+
+  return {p: structure};
 };
 
 module.exports = Paragraph;

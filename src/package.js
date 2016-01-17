@@ -3,7 +3,6 @@ var ContentTypes = require('./content_types'),
     CoreProperties = require('./docProps/core'),
     ExtendedProperties = require('./docProps/extended'),
     JsZip = require('jszip'),
-    Relationship = require('./relationship'),
     Relationships = require('./relationships');
 
 var Package = function(document) {
@@ -20,32 +19,32 @@ var Package = function(document) {
 };
 
 Package.prototype.createZip = function() {
-  var zip = new JsZip(), merged;
+  var zip = new JsZip(), merged, that = this;
 
   // Package level items
-  zip.file(Constants.Files.PackageRels, this._packageRels.serialize());
-  zip.file(Constants.Files.CoreProps, this._coreProps.serialize());
-  zip.file(Constants.Files.ExtendedProps, this._extendedProps.serialize());
+  zip.file(Constants.Files.PackageRels, this._addXmlHeader(this._packageRels.serialize()));
+  zip.file(Constants.Files.CoreProps, this._addXmlHeader(this._coreProps.serialize()));
+  zip.file(Constants.Files.ExtendedProps, this._addXmlHeader(this._extendedProps.serialize()));
 
   // Merge in content types requested from the document as well
-
   merged = this._mergeContentTypes(this._contentTypes, this._document.getContentTypes());
-  zip.file(Constants.Files.ContentTypes, merged.serialize());
+  zip.file(Constants.Files.ContentTypes, this._addXmlHeader(merged.serialize()));
 
   // Document specific items
   var docFiles = this._document.getFiles();
   docFiles.forEach(function(file) {
-    zip.file(file.name, file.contents);
+    zip.file(file.name, that._addXmlHeader(file.contents));
   });
+
   return zip;
 };
 
 Package.prototype._createPackageRels = function() {
   var docSettings = Constants[this._document.type];
 
-  this._packageRels.add(Constants.Files.CoreProps, Relationship.TargetTypes.CoreProps);
-  this._packageRels.add(Constants.Files.ExtendedProps, Relationship.TargetTypes.ExtendedProps);
-  this._packageRels.add(docSettings.Files.Document, Relationship.TargetTypes.OfficeDoc);
+  this._packageRels.add(Constants.Files.CoreProps, Constants.RelationshipTypes.CoreProps);
+  this._packageRels.add(Constants.Files.ExtendedProps, Constants.RelationshipTypes.ExtendedProps);
+  this._packageRels.add(docSettings.Files.Document, Constants.RelationshipTypes.OfficeDoc);
 };
 
 Package.prototype._createContentTypes = function() {
@@ -69,6 +68,15 @@ Package.prototype._mergeContentTypes = function(first, second) {
   });
 
   return merged;
+};
+
+Package.prototype._addXmlHeader = function(contents) {
+  var xmlHeader = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  if (contents.indexOf(xmlHeader) !== 0) {
+    return xmlHeader + '\n' + contents;
+  }
+
+  return contents;
 };
 
 module.exports = Package;
