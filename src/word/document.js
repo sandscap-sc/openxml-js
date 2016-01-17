@@ -2,19 +2,36 @@ var Xml = require('../xml'),
     XmlNamespaces = require('../constants').XmlNamespaces;
 
 var Document = function() {
-  this.paras = [];
+  this.children = [];
 };
 
 /**
- * Adds a new para to the document
- * @param {Paragraph} para
+ * Adds a new child to the document.
+ * @param {Paragraph|Table} child
  */
-Document.prototype.addPara = function(para) {
-  this.paras.push(para);
+Document.prototype.addChild = function(child) {
+  this.children.push(child);
 };
 
 Document.prototype.serialize = function() {
-  var structure = {
+  var body = {}, structure;
+
+  // TODO: (harisiva): Resorting to this hack because cannot define something like <p><table><p> in the map structure.
+  this.children.forEach(function(child) {
+    var serialized = child.serialize();
+    Object.keys(serialized).forEach(function(key) {
+      body[Xml.element(key, serialized[key], 'w')] = null;
+    });
+  });
+
+  body['sectPr'] = {
+    pgSz: {w: 12240, h: 15840},
+    pgMar: {top: 1440, right: 1440, bottom: 1440, left: 1440, header: 720, footer: 720, gutter: 0},
+    cols: {space: 720},
+    docGrid: {linePitch: 360}
+  };
+
+  structure = {
     'xmlns:m': XmlNamespaces.m,
     'xmlns:mc': XmlNamespaces.mc,
     'xmlns:mo': XmlNamespaces.mo,
@@ -34,15 +51,7 @@ Document.prototype.serialize = function() {
     'xmlns:wpi': XmlNamespaces.wpi,
     'xmlns:wps': XmlNamespaces.wps,
     'mc:Ignorable': 'w14 w15 wp14',
-    body: {
-      p: this.paras.map(function(para) { return para.serialize().p; }),
-      sectPr: {
-        pgSz: {w: 12240, h: 15840},
-        pgMar: {top: 1440, right: 1440, bottom: 1440, left: 1440, header: 720, footer: 720, gutter: 0},
-        cols: {space: 720},
-        docGrid: {linePitch: 360}
-      }
-    }
+    body: body
   };
 
   return Xml.element('document', structure, 'w');

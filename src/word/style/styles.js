@@ -1,5 +1,5 @@
 var NumberingStyles = require('./numbering_styles'),
-    TableStyles = require('./table_styles'),
+    TableStyleDefinitions = require('./table_styles'),
     TextStyles = require('./text_styles'),
     Xml = require('../../xml'),
     XmlNamespaces = require('../../constants').XmlNamespaces;
@@ -41,13 +41,17 @@ var ListNumberingStyles = {
   Bullet: 2
 };
 
+var TableStyles = {
+  GridTable1Light: 'GridTable1Light1'
+};
+
 var Styles = function() {
 };
 
 Styles.prototype.serialize = function() {
   var styles =
     [].concat(TextStyles)
-      .concat(TableStyles)
+      .concat(TableStyleDefinitions)
       .concat(NumberingStyles);
 
   var elements = {
@@ -68,3 +72,4 @@ module.exports = Styles;
 module.exports.ParagraphStyles = ParagraphStyles;
 module.exports.CharacterStyles = CharacterStyles;
 module.exports.ListNumberingStyles = ListNumberingStyles;
+module.exports.TableStyles = TableStyles;
