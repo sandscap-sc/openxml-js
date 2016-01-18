@@ -1,9 +1,11 @@
 {
-  "name": "openxml-js",
+  "name": "oxml-document",
   "version": "0.0.1",
+  "private": "true",
+  "main": "index.js",
   "license": "UNLICENSED",
-  "private": true,
   "dependencies": {
+    "oxml-base": "^0.0.1",
     "jszip": "^2.5.0"
   }
 }

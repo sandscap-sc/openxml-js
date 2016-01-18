@@ -1,12 +1,12 @@
-var Document = require('./src/wordprocessing/document'),
-    ListNumberingStyles = require('./src/wordprocessing/style/styles').ListNumberingStyles,
-    Package = require('./src/package'),
-    Paragraph = require('./src/wordprocessing/paragraph'),
-    Run = require('./src/wordprocessing/run'),
-    RunFormatting = require('./src/wordprocessing/run').RunFormatting,
-    Styles = require('./src/wordprocessing/style/styles'),
-    Table = require('./src/wordprocessing/table'),
-    Word = require('./src/wordprocessing/word'),
+var Document = require('oxml-wordprocessing').Document,
+    ListNumberingStyles = require('oxml-wordprocessing').Styles.ListNumberingStyles,
+    Package = require('oxml-document').Package,
+    Paragraph = require('oxml-wordprocessing').Paragraph,
+    Run = require('oxml-wordprocessing').Run,
+    RunFormatting = require('oxml-wordprocessing').Run.RunFormatting,
+    Styles = require('oxml-wordprocessing').Styles,
+    Table = require('oxml-wordprocessing').Table,
+    Word = require('oxml-wordprocessing').Word,
     fs = require('fs');
 
 var createDocument = function() {

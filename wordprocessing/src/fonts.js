@@ -1,6 +1,6 @@
 var Font = require('./font'),
-    Xml = require('../xml'),
-    XmlNamespaces = require('../constants').XmlNamespaces;
+    Xml = require('oxml-base').Xml,
+    XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 var Symbol = new Font(
   'Symbol', '00000000000000000000', '02', 'auto', 'variable',

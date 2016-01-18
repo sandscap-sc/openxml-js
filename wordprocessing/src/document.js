@@ -1,9 +1,9 @@
-var Constants = require('../constants'),
+var Constants = require('oxml-base').Constants,
     Hyperlink = require('./hyperlink'),
     Paragraph = require('./paragraph'),
-    Relationships = require('../relationships'),
-    Xml = require('../xml'),
-    XmlNamespaces = require('../constants').XmlNamespaces;
+    Relationships = require('oxml-base').Relationships,
+    Xml = require('oxml-base').Xml,
+    XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 /**
  * Creates a new document instance. Relationships (such as hyperlinks) are added into the provided collection.

@@ -1,9 +1,9 @@
-var ContentTypes = require('./content_types'),
-    Constants = require('./constants'),
+var ContentTypes = require('oxml-base').ContentTypes,
+    Constants = require('oxml-base').Constants,
     CoreProperties = require('./docProps/core'),
     ExtendedProperties = require('./docProps/extended'),
     JsZip = require('jszip'),
-    Relationships = require('./relationships');
+    Relationships = require('oxml-base').Relationships;
 
 var Package = function(document) {
   this._document = document;

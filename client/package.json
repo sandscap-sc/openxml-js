@@ -1,0 +1,12 @@
+{
+  "name": "oxml-client",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "oxml-base": "^0.0.1",
+    "oxml-document": "^0.0.1",
+    "oxml-spreadsheet": "^0.0.1",
+    "oxml-wordprocessing": "^0.0.1"
+  }
+}

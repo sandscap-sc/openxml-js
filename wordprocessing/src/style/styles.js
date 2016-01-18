@@ -2,8 +2,8 @@ var HyperlinkStyleDefinitions = require('./hyperlink_styles'),
     NumberingStyles = require('./numbering_styles'),
     TableStyleDefinitions = require('./table_styles'),
     TextStyles = require('./text_styles'),
-    Xml = require('../../xml'),
-    XmlNamespaces = require('../../constants').XmlNamespaces;
+    Xml = require('oxml-base').Xml,
+    XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 var DocDefaults = {
   rPrDefault: {

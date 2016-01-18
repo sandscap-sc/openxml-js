@@ -1,5 +1,5 @@
 var ParagraphStyles = require('./style/styles').ParagraphStyles,
-    Xml = require('../xml');
+    Xml = require('oxml-base').Xml;
 
 var Paragraph = function () {
   this.children = [];

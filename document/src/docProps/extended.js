@@ -1,5 +1,5 @@
-var Xml = require('../xml'),
-    XmlNamespaces = require('../constants').XmlNamespaces;
+var Xml = require('oxml-base').Xml,
+    XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 var ExtendedProperties = function() {
 };
