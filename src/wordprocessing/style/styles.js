@@ -1,4 +1,5 @@
-var NumberingStyles = require('./numbering_styles'),
+var HyperlinkStyleDefinitions = require('./hyperlink_styles'),
+    NumberingStyles = require('./numbering_styles'),
     TableStyleDefinitions = require('./table_styles'),
     TextStyles = require('./text_styles'),
     Xml = require('../../xml'),
@@ -45,6 +46,11 @@ var TableStyles = {
   GridTable1Light: 'GridTable1Light1'
 };
 
+var HyperLinkStyles = {
+  Hyperlink: 'Hyperlink',
+  FollowedHyperlink: 'FollowedHyperlink'
+};
+
 var Styles = function() {
 };
 
@@ -52,7 +58,8 @@ Styles.prototype.serialize = function() {
   var styles =
     [].concat(TextStyles)
       .concat(TableStyleDefinitions)
-      .concat(NumberingStyles);
+      .concat(NumberingStyles)
+      .concat(HyperlinkStyleDefinitions);
 
   var elements = {
     'xmlns:mc': XmlNamespaces.mc,
@@ -73,3 +80,4 @@ module.exports.ParagraphStyles = ParagraphStyles;
 module.exports.CharacterStyles = CharacterStyles;
 module.exports.ListNumberingStyles = ListNumberingStyles;
 module.exports.TableStyles = TableStyles;
+module.exports.HyperlinkStyles = HyperLinkStyles;

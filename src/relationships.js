@@ -7,6 +7,13 @@ var Relationships = function() {
   this.rels = [];
 };
 
+/**
+ * Creates a new relationship in the collection and assigns and ID automatically.
+ * @param {string} target
+ * @param {string} targetType
+ * @param {string} [opt_targetMode]
+ * @returns {Relationship}
+ */
 Relationships.prototype.add = function(target, targetType, opt_targetMode) {
   var id = 'rId' + this._nextId++;
 

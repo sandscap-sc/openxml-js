@@ -13,7 +13,7 @@ Relationship.prototype.serialize = function() {
   };
 
   if (this.targetMode) {
-    props.targetMode = this.targetMode;
+    props.TargetMode = this.targetMode;
   }
 
   return props;

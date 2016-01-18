@@ -46,7 +46,7 @@ var Constants = {
     CoreProps: 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties',
     ExtendedProps: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties',
     FontTable: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable',
-    HyperLink: 'http://schemas.microsoft.com/office/2006/relationships/hyperlink',
+    HyperLink: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
     Image: 'http://schemas.microsoft.com/office/2006/relationships/image',
     Numbering: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering',
     OfficeDoc: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument',

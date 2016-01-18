@@ -1,7 +1,8 @@
-var ParagraphStyles = require('./style/styles').ParagraphStyles;
+var ParagraphStyles = require('./style/styles').ParagraphStyles,
+    Xml = require('../xml');
 
 var Paragraph = function () {
-  this.runs = [];
+  this.children = [];
   this.numberedListStyle = null;
 };
 
@@ -13,8 +14,20 @@ Paragraph.prototype.styleAsList = function (indentationLevel, listStyle) {
   };
 };
 
+/**
+ * Adds new run into the paragraph.
+ * @param {Run} run
+ */
 Paragraph.prototype.addRun = function (run) {
-  this.runs.push(run);
+  this.children.push(run);
+};
+
+/**
+ * Adds new hyperlink into the paragraph.
+ * @param {Hyperlink} hyperlink
+ */
+Paragraph.prototype.addHyperlink = function (hyperlink) {
+  this.children.push(hyperlink);
 };
 
 /**
@@ -26,7 +39,7 @@ Paragraph.prototype.serialize = function () {
   if (this.style) {
     pPr = {};
     pPr['pStyle'] = {
-        val: this.style
+      val: this.style
     };
 
     if (this.numberedListStyle) {
@@ -41,9 +54,12 @@ Paragraph.prototype.serialize = function () {
     structure['pPr'] = pPr;
   }
 
-  if (this.runs) {
-    structure['r'] = this.runs.map(function(run) { return run.serialize().r; });
-  }
+  this.children.forEach(function (child) {
+    var serialized = child.serialize();
+    Object.keys(serialized).forEach(function (key) {
+      structure[Xml.element(key, serialized[key], 'w')] = null;
+    });
+  });
 
   return {p: structure};
 };

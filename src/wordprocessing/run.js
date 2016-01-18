@@ -1,15 +1,8 @@
-var CharacterStyles = require('./style/styles').CharacterStyles;
-
 var RunFormatting = {
   Bold: 'bold',
   Italics: 'italics',
   StrikeThrough: 'strike',
   Underline: 'underline'
-};
-
-var RunStyles = {
-  Heading1: 'Heading1',
-  Heading2: 'Heading2'
 };
 
 var Run = function (options) {
@@ -46,7 +39,7 @@ Run.prototype.serialize = function () {
     });
 
     if (this.style) {
-      rPr['rStyle'] = {val: CharacterStyles[this.style]};
+      rPr['rStyle'] = {val: this.style};
     }
   }
 
@@ -79,4 +72,3 @@ Run.prototype.serialize = function () {
 
 module.exports = Run;
 module.exports.RunFormatting = RunFormatting;
-module.exports.RunStyles = RunStyles;
