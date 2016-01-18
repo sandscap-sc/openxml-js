@@ -24,8 +24,18 @@ var Constants = {
     }
   },
 
+  Spreadsheet: {
+    Files: {
+      Document: 'xl/workbook.xml',
+      Rels: 'xl/_rels/workbook.xml.rels',
+      SharedStrings: 'xl/sharedStrings.xml',
+      Styles: 'xl/styles.xml'
+    }
+  },
+
   ContentTypes: {
     WordDocument: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml',
+    SpreadsheetDocument: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml',
     Numbering: 'application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml',
     Styles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml',
     Settings: 'application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml',
@@ -34,7 +44,9 @@ var Constants = {
     Theme: 'application/vnd.openxmlformats-officedocument.theme+xml',
     CoreProperties: 'application/vnd.openxmlformats-package.core-properties+xml',
     ExtendedProperties: 'application/vnd.openxmlformats-officedocument.extended-properties+xml',
-    Relationships: 'application/vnd.openxmlformats-package.relationships+xml'
+    Relationships: 'application/vnd.openxmlformats-package.relationships+xml',
+    SpreadsheetTable: 'application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml',
+    Worksheet: 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml'
   },
 
   RelationshipTargetModes: {
@@ -52,8 +64,10 @@ var Constants = {
     OfficeDoc: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument',
     Settings: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings',
     Styles: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles',
+    Table: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/table',
     Theme: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
-    WebSettings: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings'
+    WebSettings: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings',
+    Worksheet: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet'
   },
 
   XmlNamespaces: {
@@ -70,6 +84,7 @@ var Constants = {
     mv: 'urn:schemas-microsoft-com:mac:vml',
     o: 'urn:schemas-microsoft-com:office:office',
     r: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+    sml: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
     sl: 'http://schemas.openxmlformats.org/schemaLibrary/2006/main',
     v: 'urn:schemas-microsoft-com:vml',
     w: 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
@@ -82,7 +97,9 @@ var Constants = {
     wpc: 'http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas',
     wpg: 'http://schemas.microsoft.com/office/word/2010/wordprocessingGroup',
     wpi: 'http://schemas.microsoft.com/office/word/2010/wordprocessingInk',
-    wps: 'http://schemas.microsoft.com/office/word/2010/wordprocessingShape'
+    wps: 'http://schemas.microsoft.com/office/word/2010/wordprocessingShape',
+    x14ac: 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac',
+    x15: 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main'
   }
 };
 

@@ -7,6 +7,9 @@ var Document = require('oxml-wordprocessing').Document,
     Styles = require('oxml-wordprocessing').Styles,
     Table = require('oxml-wordprocessing').Table,
     Word = require('oxml-wordprocessing').Word,
+    Workbook = require('oxml-spreadsheet').Workbook,
+    WorksheetTable = require('oxml-spreadsheet').Table,
+    Xl = require('oxml-spreadsheet').Xl,
     fs = require('fs');
 
 var createDocument = function() {
@@ -75,13 +78,12 @@ var createDocument = function() {
   return document;
 };
 
-if (require.main === module) {
+var testDocx = function() {
   var document = createDocument();
-
   var word = new Word(document);
 
   var pack = new Package(word);
-  zip = pack.createZip();
+  var zip = pack.createZip();
 
   var buffer = zip.generate({type:"nodebuffer"});
   fs.writeFile("./testdoc/test/test.zip", buffer, function(err) {
@@ -91,4 +93,56 @@ if (require.main === module) {
   fs.writeFile("./testdoc/test.docx", buffer, function(err) {
     if (err) throw err;
   });
+};
+
+var createWorkbook = function() {
+  var workbook = new Workbook();
+
+  var sheet1 = workbook.addSheet('sheet1');
+  var sheet2 = workbook.addSheet('sheet2');
+  var sheet3 = workbook.addSheet('sheet3');
+
+  // First row of the table is column names
+  var columnNames = ['Column 1', 'Column 2', 'Column 3'];
+  sheet3.addRow(columnNames);
+
+  for (var i = 0; i < 100; i++) {
+    sheet3.addRow(['a' + i, 'b' + i, 'c' + i]);
+  }
+
+  sheet3.addRow(['d', 'e', 'f']);
+
+  var table1 = new WorksheetTable(
+    {
+      id: 1,
+      name: 'table1',
+      displayName: 'Table_1'
+    },
+    sheet3.getCellRange(),
+    columnNames);
+
+  sheet3.addTable(table1);
+
+  return workbook;
+};
+
+var testSpreadsheet = function() {
+  var workbook = createWorkbook();
+  var xl = new Xl(workbook);
+
+  var pack = new Package(xl);
+  var zip = pack.createZip();
+
+  var buffer = zip.generate({type:"nodebuffer"});
+  fs.writeFile("./testsheet/test/test.zip", buffer, function(err) {
+    if (err) throw err;
+  });
+
+  fs.writeFile("./testsheet/test.xlsx", buffer, function(err) {
+    if (err) throw err;
+  });
+};
+
+if (require.main === module) {
+  testSpreadsheet();
 }

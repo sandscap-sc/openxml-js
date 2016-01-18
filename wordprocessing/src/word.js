@@ -7,7 +7,7 @@ var ContentTypes = require('oxml-base').ContentTypes,
     WebSettings = require('./web_settings');
 
 /**
- * Creates a new instance of word processing file with the provided document contents;
+ * Creates a new instance of word processing file with the provided document contents.
  * @param {Document} document
  * @constructor
  */
