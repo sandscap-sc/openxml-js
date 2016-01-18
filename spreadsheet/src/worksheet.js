@@ -1,17 +1,34 @@
 var CellRange = require('./cell_range'),
     Relationships = require('oxml-base').Relationships,
     RelationshipTypes = require('oxml-base').Constants.RelationshipTypes,
+    Utils = require('./utils'),
     Xml = require('oxml-base').Xml,
     XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 var Worksheet = function(name) {
-  this.name = name;
+  this._name = name;
 
   this._tables = [];
   this._rels = new Relationships();
   this._rows = [];
 
   this._columnNames = [];
+};
+
+/**
+ * Retrieves file name for the sheet.
+ * @returns {*}
+ */
+Worksheet.prototype.getName = function() {
+  return this._name;
+};
+
+/**
+ * Retrieves name of the file that has this sheet data.
+ * @returns {string}
+ */
+Worksheet.prototype.getFilename = function() {
+  return Utils.sanitizeName(this._name) + '.xml';
 };
 
 /**
@@ -49,14 +66,6 @@ Worksheet.prototype.getTables = function() {
   return this._tables.map(function(table) {
     return table.table;
   });
-};
-
-/**
- * Retrieves name of the file that has this sheet data.
- * @returns {string}
- */
-Worksheet.prototype.getFilename = function() {
-  return this.name + '.xml';
 };
 
 Worksheet.prototype.getRelationships = function() {

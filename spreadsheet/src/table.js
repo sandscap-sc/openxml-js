@@ -1,4 +1,5 @@
-var Xml = require('oxml-base').Xml,
+var Utils = require('./utils'),
+    Xml = require('oxml-base').Xml,
     XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
 var tableStyleInfo = {
@@ -17,14 +18,11 @@ var tableStyleInfo = {
  * @constructor
  */
 var Table = function(options, cellRange, columnNames) {
-  // Excel does not allow spaces in table names
-  if (options.name.indexOf(' ') !== -1 || options.displayName.indexOf(' ') !== -1) {
-    throw new Error('Spaces not allowed in table names');
-  }
-
   this._id = options.id;
-  this._name = options.name;
-  this._displayName = options.displayName;
+
+  this._name = Utils.sanitizeName(options.name);
+  this._displayName = Utils.sanitizeName(options.displayName);
+
   this._columnNames = columnNames;
   this._cellRange = cellRange;
 };

@@ -31,7 +31,7 @@ Xl.prototype.getFiles = function() {
     // It there are rels in the sheet, write those out too
     var rels = sheet.getRelationships();
     if (rels.rels.length > 0) {
-      files.push({name: 'xl/worksheets/_rels/' + sheet.name + '.xml.rels', contents: rels.serialize()})
+      files.push({name: 'xl/worksheets/_rels/' + sheet.getFilename() + '.rels', contents: rels.serialize()})
     }
 
     // Tables in the sheet

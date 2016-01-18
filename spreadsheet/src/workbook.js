@@ -55,7 +55,7 @@ Workbook.prototype.serialize = function() {
     'mc:Ignorable': 'x15',
     sheets: {
       sheet: this._sheets.map(function(sheet) {
-        return {name: sheet.workSheet.name, sheetId: sheet.id, 'r:id': sheet.relId};
+        return {name: sheet.workSheet.getName(), sheetId: sheet.id, 'r:id': sheet.relId};
       })
     }
   };
