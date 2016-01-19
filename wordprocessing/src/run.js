@@ -59,8 +59,10 @@ Run.prototype.serialize = function () {
 
   if (rPr) {
     structure['rPr'] = rPr;
-  } else if (drawingContents) {
-    structure[drawingContents.diagram] = drawingContents;
+  }
+
+  if (drawingContents) {
+    structure['w:drawing'] = drawingContents.drawing;
   }
 
   if (text) {

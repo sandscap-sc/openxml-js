@@ -41,7 +41,14 @@ Word.prototype.getContentTypes = function() {
  * @returns {[{name: {String}, contents: {Strings}}]}
  */
 Word.prototype.getFiles = function() {
-  return [
+  var files;
+
+  // All drawings need to be written out as files
+  files = (this._document.getDrawings().map(function(drawing) {
+    return {name: 'word/' + drawing.fileLocation, contents: drawing.getContents()};
+  }));
+
+  return files.concat([
     {name: Files.Document, contents: this._document.serialize()},
     {name: Files.FontTable, contents: this._fonts.serialize()},
     {name: Files.Rels, contents: this._document.getRelationships().serialize()},
@@ -49,7 +56,7 @@ Word.prototype.getFiles = function() {
     {name: Files.Settings, contents: this._settings.serialize()},
     {name: Files.WebSettings, contents: this._webSettings.serialize()}
     // {name: Files.Theme, contents: theme1Xml}
-  ];
+  ]);
 };
 
 Word.prototype._addRelationships = function() {

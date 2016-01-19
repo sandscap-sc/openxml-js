@@ -54,8 +54,12 @@ var Xml = {
         // An object, i.e. child element
         elements.push(Xml.element(key, value, opt_prefix));
       } else {
-        // This is an attribute
-        attributes.push(Xml._getName(key, prefix) + '="' + Xml._escape(value) + '"');
+        // This is an attribute. Don't add prefix is element has one specified explicitly.
+        if (name.indexOf(':') === -1) {
+          attributes.push(Xml._getName(key, prefix) + '="' + Xml._escape(value) + '"');
+        } else {
+          attributes.push(Xml._getName(key, '') + '="' + Xml._escape(value) + '"');
+        }
       }
     });
 

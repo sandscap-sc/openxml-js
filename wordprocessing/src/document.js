@@ -1,7 +1,9 @@
 var Constants = require('oxml-base').Constants,
+    Drawing = require('./drawing'),
     Hyperlink = require('./hyperlink'),
     Paragraph = require('./paragraph'),
     Relationships = require('oxml-base').Relationships,
+    Run = require('./run'),
     Xml = require('oxml-base').Xml,
     XmlNamespaces = require('oxml-base').Constants.XmlNamespaces;
 
@@ -11,7 +13,9 @@ var Constants = require('oxml-base').Constants,
  */
 var Document = function() {
   this.children = [];
+
   this._relationships = new Relationships();
+  this._drawings = [];
 };
 
 /**
@@ -50,8 +54,38 @@ Document.prototype.addHyperlink = function(linkUrl) {
   this.children.push(para);
 };
 
+/**
+ * Adds a new drawing to the document. Adds a relationship as well.
+ * @param {string} name
+ * @param {string} description
+ * @param {string} filename
+ * @returns {Drawing}
+ */
+Document.prototype.addDrawing = function(name, description, filename) {
+  var relationship, drawing, para, fileLocation;
+
+  fileLocation = 'media/' + filename;
+  relationship = this._relationships.add(fileLocation, Constants.RelationshipTypes.Image);
+
+  drawing = new Drawing(this._drawings.length + 1, relationship.id, name, description, fileLocation);
+  this._drawings.push(drawing);
+
+  para = new Paragraph();
+  para.addRun(new Run({drawing: drawing}));
+
+  this.children.push(para);
+  return drawing;
+};
+
 Document.prototype.getRelationships = function() {
   return this._relationships;
+};
+
+/**
+ * Gets all drawings that are in this document.
+ */
+Document.prototype.getDrawings = function() {
+  return this._drawings;
 };
 
 Document.prototype.serialize = function() {

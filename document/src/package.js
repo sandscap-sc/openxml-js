@@ -33,7 +33,11 @@ Package.prototype.createZip = function() {
   // Document specific items
   var docFiles = this._document.getFiles();
   docFiles.forEach(function(file) {
-    zip.file(file.name, that._addXmlHeader(file.contents));
+    if(file.name.indexOf('.xml') !== -1) {
+      zip.file(file.name, that._addXmlHeader(file.contents));
+    } else {
+      zip.file(file.name, file.contents);
+    }
   });
 
   return zip;
