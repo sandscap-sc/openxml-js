@@ -1,3 +1,11 @@
+var XML_ESCAPE_CHARACTERS = {
+  '>': '&gt;',
+  '<': '&lt;',
+  "'": '&apos;',
+  '"': '&quot;',
+  '&': '&amp;'
+};
+
 var Xml = {
   /**
    * Creates a new element with the given name, and object structure.
@@ -20,7 +28,7 @@ var Xml = {
       value = contents[key];
       if (typeof value === 'undefined' || value === null) {
         // There is no value, treat the key as the literal content
-        elements.push(key);
+        elements.push(Xml._escape(key));
       } else if (value.constructor === Array) {
         // An array of elements
         value.forEach(function(arrayElement) {
@@ -31,7 +39,7 @@ var Xml = {
         elements.push(Xml.element(key, value, opt_prefix));
       } else {
         // This is an attribute
-        attributes.push(Xml._getName(key, prefix) + '="' + value + '"');
+        attributes.push(Xml._getName(key, prefix) + '="' + Xml._escape(value) + '"');
       }
     });
 
@@ -58,6 +66,16 @@ var Xml = {
     }
 
     return (opt_prefix || '') + name;
+  },
+
+  /**
+   * Escape provided text and make it valid inside XML.
+   * @private
+   */
+  _escape: function(text) {
+    return (text + '').replace(/([&"<>'])/g, function(str, item) {
+      return XML_ESCAPE_CHARACTERS[item];
+    });
   }
 };
 

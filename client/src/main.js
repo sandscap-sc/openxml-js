@@ -110,7 +110,7 @@ var createWorkbook = function() {
     sheet3.addRow(['a' + i, 'b' + i, 'c' + i]);
   }
 
-  sheet3.addRow(['d', 'e', 'f']);
+  sheet3.addRow(['d<', 'e>', "f'"]);
 
   var table1 = new WorksheetTable(
     {
