@@ -57,13 +57,8 @@ Document.prototype.getRelationships = function() {
 Document.prototype.serialize = function() {
   var body = {}, structure;
 
-  // TODO: (harisiva): Resorting to this hack because cannot define
-  // something like <p><table><p> in the map structure.
-  this.children.forEach(function(child) {
-    var serialized = child.serialize();
-    Object.keys(serialized).forEach(function(key) {
-      body[Xml.element(key, serialized[key], 'w')] = null;
-    });
+  body[''] = this.children.map(function(child) {
+    return child.serialize();
   });
 
   body['sectPr'] = {

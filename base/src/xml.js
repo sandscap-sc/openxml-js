@@ -26,6 +26,22 @@ var Xml = {
 
     keys.forEach(function(key) {
       value = contents[key];
+
+      // If the key is empty, then the value should be an array, and each element of the array
+      // is assumed to be an XML element that should be produced.
+      if (key === '') {
+        if (!value || value.constructor !== Array) {
+          throw new Error('Cannot convert ' + value + ' into XML.');
+        }
+
+        value.forEach(function(valueElement) {
+          var elementKey = Object.keys(valueElement)[0];
+          elements.push(Xml.element(elementKey, valueElement[elementKey], opt_prefix));
+        });
+
+        return;
+      }
+
       if (typeof value === 'undefined' || value === null) {
         // There is no value, treat the key as the literal content
         elements.push(Xml._escape(key));

@@ -54,11 +54,8 @@ Paragraph.prototype.serialize = function () {
     structure['pPr'] = pPr;
   }
 
-  this.children.forEach(function (child) {
-    var serialized = child.serialize();
-    Object.keys(serialized).forEach(function (key) {
-      structure[Xml.element(key, serialized[key], 'w')] = null;
-    });
+  structure[''] = this.children.map(function(child) {
+    return child.serialize();
   });
 
   return {p: structure};
